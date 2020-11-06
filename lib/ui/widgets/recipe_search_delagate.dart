@@ -2,19 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_bloc/blocs/meals/meals_bloc.dart';
 
+import '../../utils.dart';
+
 class CustomSearchDelegate extends SearchDelegate {
-  List<String> _suggestions = [
-    "Beef",
-    "Pork",
-    "Chicken",
-    "Chocolate",
-    "Salad",
-    "Fish",
-    "Salmon",
-    "Bread",
-    "Tea",
-    "Goat",
-  ];
   @override
   ThemeData appBarTheme(BuildContext context) {
     assert(context != null);
@@ -66,9 +56,13 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<String> _newList = _suggestions;
+    List<String> _tempList = [...Utils.SUGGESTIONS];
+    _tempList.addAll(["Chocolate", "Salad", "Salmon", "Tea", "Bread"]);
+
+    List<String> _newList = _tempList;
+
     if (query.trim().isNotEmpty) {
-      _newList = _suggestions
+      _newList = _tempList
           .where(
               (element) => element.toLowerCase().contains(query.toLowerCase()))
           .toList();

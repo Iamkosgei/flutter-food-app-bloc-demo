@@ -38,10 +38,10 @@ class MealsGrid extends StatelessWidget {
                   color: Colors.green,
                   child: Text(
                     meals[index].strMeal,
-                    textAlign: TextAlign.start,
+                    textAlign: index.isEven ? TextAlign.end : TextAlign.start,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 12,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:food_bloc/models/meals.dart';
+import 'package:food_bloc/utils.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
@@ -10,7 +11,9 @@ class ApiService {
   ApiService(this.httpClient) : assert(httpClient != null);
 
   Future<List<Meal>> fetchMeals() async {
-    final filterByMainIngredientUrl = '$baseUrl/filter.php?i=pork';
+    Utils _utils = new Utils();
+    final filterByMainIngredientUrl =
+        '$baseUrl/filter.php?i=${_utils.getRandomWordFromList()}';
     final response = await this.httpClient.get(filterByMainIngredientUrl);
 
     if (response.statusCode != 200) {
