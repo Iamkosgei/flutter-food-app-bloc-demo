@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'blocs/meals/meals_bloc.dart';
+import 'blocs/simple_bloc_delegate.dart';
 import 'repository/meals_repo.dart';
 import 'services/api_service.dart';
 import 'package:http/http.dart' as http;
@@ -9,6 +10,8 @@ import 'package:http/http.dart' as http;
 import 'ui/meals_page.dart';
 
 void main() {
+  Bloc.observer = MyBlocObserver();
+
   final MealsRepo mealsRepo = MealsRepo(
     ApiService(
       http.Client(),

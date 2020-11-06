@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_bloc/blocs/meals/meals_bloc.dart';
@@ -24,31 +25,43 @@ class MealsPage extends StatelessWidget {
       ),
       body: BlocListener<MealsBloc, MealsState>(
         listener: (context, MealsState state) {
-          if (state is MealsError) {
-            Scaffold.of(context).showSnackBar(SnackBar(
-              backgroundColor: Colors.red,
-              content: Text('Error'),
-            ));
-          }
+          //navigation or snackbars
         },
         child: BlocBuilder<MealsBloc, MealsState>(
             // cubit: _mealsBloc,
             builder: (context, MealsState state) {
-          if (state is MealsInitial) {
-            return Container();
-          }
           if (state is MealsLoading) {
             return Center(child: CircularProgressIndicator());
           } else if (state is MealsLoaded) {
             return MealsGrid(
               meals: state.props,
             );
+          } else if (state is MealsError) {
+            return Container(
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text("Error"),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    CupertinoButton.filled(
+                        child: Text(
+                          "Retry",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        onPressed: () {
+                          BlocProvider.of<MealsBloc>(context).add(FetchMeals());
+                        })
+                  ],
+                ),
+              ),
+            );
           }
-          return Container(
-            child: Center(
-              child: Text("Error"),
-            ),
-          );
+          return Container();
         }),
       ),
     );

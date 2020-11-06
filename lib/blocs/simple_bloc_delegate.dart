@@ -1,22 +1,23 @@
-// import 'package:bloc/bloc.dart';
-// import 'package:flutter/foundation.dart';
-// import 'dart:async';
-// class SimpleBlocDelegates extends BlocDele {
-//   @override
-//   void onEvent(Bloc bloc, Object event) {
-//     super.onEvent(bloc, event);
-//     print(event);
-//   }
+import 'dart:developer';
 
-//   @override
-//   void onTransition(Bloc bloc, Transition transition) {
-//     super.onTransition(bloc, transition);
-//     print(transition);
-//   }
+import 'package:bloc/bloc.dart';
 
-//   @override
-//   void onError(Bloc bloc, Object error, StackTrace stacktrace) {
-//     super.onError(bloc, error, stacktrace);
-//     print('$error, $stacktrace');
-//   }
-// }
+class MyBlocObserver extends BlocObserver {
+  @override
+  void onEvent(Bloc bloc, Object event) {
+    super.onEvent(bloc, event);
+    log(event.toString(), name: 'BLoC !!');
+  }
+
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    super.onTransition(bloc, transition);
+    log(transition.toString(), name: 'BLoC >>');
+  }
+
+  @override
+  void onChange(Cubit cubit, Change change) {
+    super.onChange(cubit, change);
+    log(change.toString(), name: 'BLoC EE');
+  }
+}
