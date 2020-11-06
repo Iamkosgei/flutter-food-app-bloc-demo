@@ -13,6 +13,8 @@ class MealsLoading extends MealsState {}
 
 class MealsError extends MealsState {}
 
+class MealsEmpty extends MealsState {}
+
 class MealsLoaded extends MealsState {
   @override
   List<Meal> get props => meals;

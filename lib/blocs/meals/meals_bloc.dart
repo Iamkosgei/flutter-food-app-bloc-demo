@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -23,12 +24,26 @@ class MealsBloc extends Bloc<MealsEvent, MealsState> {
   ) async* {
     if (event is FetchMeals) {
       yield MealsLoading();
-
       try {
         final List<Meal> meals = await mealsRepo.getMeals();
         yield MealsLoaded(meals);
       } catch (_) {
         yield MealsError();
+      }
+    } else if (event is SearchMeal) {
+      yield MealsLoading();
+      try {
+        final List<Meal> meals = await mealsRepo.searchMeals(event.query);
+        if (meals != null) {
+          if (meals.length != 0) {
+            yield MealsLoaded(meals);
+          }
+        } else {
+          yield MealsEmpty();
+        }
+        log("search results-->${meals.toString()}");
+      } catch (e) {
+        log("search results-->${e.toString()}");
       }
     }
   }

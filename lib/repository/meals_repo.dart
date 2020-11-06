@@ -8,4 +8,8 @@ class MealsRepo {
   Future<List<Meal>> getMeals() async {
     return await apiService.fetchMeals();
   }
+
+  Future<List<Meal>> searchMeals(String query) async {
+    return await apiService.searchMeals(query);
+  }
 }

@@ -10,3 +10,8 @@ abstract class MealsEvent extends Equatable {
 class FetchMeals extends MealsEvent {
   const FetchMeals();
 }
+
+class SearchMeal extends MealsEvent {
+  final String query;
+  const SearchMeal(this.query);
+}

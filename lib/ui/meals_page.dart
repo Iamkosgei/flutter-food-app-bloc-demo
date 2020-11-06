@@ -3,25 +3,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_bloc/blocs/meals/meals_bloc.dart';
 
-import 'meals_grid.dart';
+import 'widgets/meals_empty.dart';
+import 'widgets/meals_grid.dart';
+import 'widgets/recipe_search_delagate.dart';
 
 class MealsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: AppBar(
         brightness: Brightness.dark,
-        backgroundColor: Colors.orange,
+        backgroundColor: Colors.green,
         elevation: 0.0,
         title: Text(
-          "Food Bloc",
+          "Food",
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: CustomSearchDelegate(),
+              );
+            },
+          ),
+        ],
       ),
       body: BlocListener<MealsBloc, MealsState>(
         listener: (context, MealsState state) {
@@ -34,7 +49,7 @@ class MealsPage extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           } else if (state is MealsLoaded) {
             return MealsGrid(
-              meals: state.props,
+              meals: state.props.reversed.toList(),
             );
           } else if (state is MealsError) {
             return Container(
@@ -60,6 +75,8 @@ class MealsPage extends StatelessWidget {
                 ),
               ),
             );
+          } else if (state is MealsEmpty) {
+            return MealsEmptyWidget();
           }
           return Container();
         }),

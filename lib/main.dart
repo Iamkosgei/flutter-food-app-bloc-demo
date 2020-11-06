@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'blocs/meals/meals_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'ui/meals_page.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
 
   final MealsRepo mealsRepo = MealsRepo(
@@ -36,7 +38,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Bloc Demo',
         theme: ThemeData(
-          primarySwatch: Colors.orange,
+          primarySwatch: Colors.green,
         ),
         home: MealsPage(),
       ),

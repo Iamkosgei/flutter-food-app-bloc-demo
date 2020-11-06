@@ -10,7 +10,19 @@ class ApiService {
   ApiService(this.httpClient) : assert(httpClient != null);
 
   Future<List<Meal>> fetchMeals() async {
-    final filterByMainIngredientUrl = '$baseUrl/filter.php?i=chicken_breast';
+    final filterByMainIngredientUrl = '$baseUrl/filter.php?i=pork';
+    final response = await this.httpClient.get(filterByMainIngredientUrl);
+
+    if (response.statusCode != 200) {
+      throw Exception('error getting meals');
+    }
+
+    final mealsJson = jsonDecode(response.body);
+    return Meals.fromJson(mealsJson).meals;
+  }
+
+  Future<List<Meal>> searchMeals(String query) async {
+    final filterByMainIngredientUrl = '$baseUrl/search.php?s=$query';
     final response = await this.httpClient.get(filterByMainIngredientUrl);
 
     if (response.statusCode != 200) {
