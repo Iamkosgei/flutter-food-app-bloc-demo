@@ -81,6 +81,9 @@ class _MealsDetailsPageState extends State<MealsDetailsPage> {
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
+                      MealDetailsTag(
+                        tags: state.mealDetails.meals.first.strTags?.split(","),
+                      ),
                       SizedBox(
                         height: 10,
                       ),
