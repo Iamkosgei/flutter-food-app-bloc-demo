@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_bloc/blocs/meals/meals_bloc.dart';
 
-import 'widgets/meals_empty.dart';
-import 'widgets/meals_grid.dart';
-import 'widgets/recipe_search_delagate.dart';
+import '../widgets/meals_empty.dart';
+import '../widgets/meals_grid.dart';
+import '../widgets/recipe_search_delagate.dart';
 
 class MealsPage extends StatelessWidget {
   @override
@@ -37,6 +37,12 @@ class MealsPage extends StatelessWidget {
             },
           ),
         ],
+        leading: IconButton(
+          icon: Icon(Icons.refresh),
+          onPressed: () {
+            BlocProvider.of<MealsBloc>(context).add(FetchMeals());
+          },
+        ),
       ),
       body: BlocListener<MealsBloc, MealsState>(
         listener: (context, MealsState state) {

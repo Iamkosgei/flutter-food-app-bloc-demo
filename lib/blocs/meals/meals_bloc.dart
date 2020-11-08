@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:food_bloc/models/meal_details.dart';
 import 'package:food_bloc/models/meals.dart';
 import 'package:food_bloc/repository/meals_repo.dart';
 
@@ -41,9 +42,8 @@ class MealsBloc extends Bloc<MealsEvent, MealsState> {
         } else {
           yield MealsEmpty();
         }
-        log("search results-->${meals.toString()}");
       } catch (e) {
-        log("search results-->${e.toString()}");
+        yield MealsError();
       }
     }
   }
