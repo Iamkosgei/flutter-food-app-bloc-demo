@@ -14,7 +14,7 @@ class MealsGrid extends StatelessWidget {
 
     return RefreshIndicator(
       onRefresh: () {
-        BlocProvider.of<MealsBloc>(context).add(FetchMeals());
+        // BlocProvider.of<MealsBloc>(context).add(FetchMeals());
         return Future.value(true);
       },
       child: ListView.builder(

@@ -13,4 +13,9 @@ class Utils {
     int max = SUGGESTIONS.length;
     return SUGGESTIONS[min + rnd.nextInt(max - min)];
   }
+
+  static const SEARCH_CATEGORY_KEY = "search_category";
+  static const String DB_NAME = 'food_database.db';
+  static const String MEAL_TABLE = 'meal';
+  static const String CATEGORY_TABLE = 'category';
 }

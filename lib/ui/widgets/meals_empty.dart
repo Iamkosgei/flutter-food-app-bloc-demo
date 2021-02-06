@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'recipe_search_delagate.dart';
-
 class MealsEmptyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -29,12 +27,7 @@ class MealsEmptyWidget extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
-                onPressed: () {
-                  showSearch(
-                    context: context,
-                    delegate: CustomSearchDelegate(),
-                  );
-                })
+                onPressed: () {})
           ],
         ),
       ),

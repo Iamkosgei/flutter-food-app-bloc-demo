@@ -1,25 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'blocs/meal_category/meal_category_bloc.dart';
 import 'blocs/meal_details/meal_details_bloc.dart';
 import 'blocs/meals/meals_bloc.dart';
 import 'blocs/simple_bloc_delegate.dart';
 import 'repository/meals_repo.dart';
+
 import 'services/api_service.dart';
-import 'package:http/http.dart' as http;
+import 'services/database_service.dart';
+import 'ui/pages/categories_page.dart';
+import 'utils/locator.dart';
 
-import 'ui/pages/meals_page.dart';
-
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   Bloc.observer = MyBlocObserver();
 
-  final MealsRepo mealsRepo = MealsRepo(
-    ApiService(
-      http.Client(),
-    ),
-  );
+  setUpLocator();
+
+  var _databaseService = getIt.get<DatabaseService>();
+
+  var _apiService = getIt.get<ApiService>();
+
+  await _databaseService.initialise();
+
+  final MealsRepo mealsRepo = MealsRepo(_apiService);
 
   runApp(MyApp(
     mealsRepo: mealsRepo,
@@ -38,15 +44,18 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => MealsBloc(mealsRepo: mealsRepo)),
         BlocProvider(
             create: (context) => MealDetailsBloc(mealsRepo: mealsRepo)),
+        BlocProvider(
+            create: (context) => MealCategoryBloc(mealsRepo: mealsRepo)),
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Bloc Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.green,
-        ),
-        home: MealsPage(),
-      ),
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Bloc Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.green,
+          ),
+          home: CategoryPage()
+          //MealsPage(),
+          ),
     );
   }
 }

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:food_bloc/models/meal_details.dart';
+import 'package:food_bloc/models/meals.dart';
 import 'package:food_bloc/repository/meals_repo.dart';
 
 part 'meal_details_event.dart';
@@ -20,8 +20,7 @@ class MealDetailsBloc extends Bloc<MealDetailsEvent, MealDetailsState> {
     if (event is GetMealDetails) {
       yield MealDetailsLoading();
       try {
-        final MealDetails mealDetails =
-            await mealsRepo.getMealDetails(event.id);
+        final Meal mealDetails = await mealsRepo.getMealDetails(event.id);
         if (mealDetails != null) {
           yield MealDetailsLoaded(mealDetails);
         } else {

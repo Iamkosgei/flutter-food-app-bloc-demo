@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_bloc/blocs/meal_details/meal_details_bloc.dart';
-import 'package:food_bloc/blocs/meals/meals_bloc.dart';
 import 'package:food_bloc/models/meals.dart';
 
 class MealsDetailsPage extends StatefulWidget {
@@ -18,7 +17,7 @@ class _MealsDetailsPageState extends State<MealsDetailsPage> {
   void initState() {
     super.initState();
     BlocProvider.of<MealDetailsBloc>(context)
-        .add(GetMealDetails(widget.meal.idMeal));
+        .add(GetMealDetails(widget.meal.idMeal.toString()));
   }
 
   @override
@@ -82,13 +81,12 @@ class _MealsDetailsPageState extends State<MealsDetailsPage> {
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       MealDetailsTag(
-                        tags: state.mealDetails.meals.first.strTags?.split(","),
+                        tags: state.mealDetails.strTags?.split(","),
                       ),
                       SizedBox(
                         height: 10,
                       ),
-                      Text(state.mealDetails.meals.first.strInstructions
-                              .toLowerCase() ??
+                      Text(state.mealDetails.strInstructions?.toLowerCase() ??
                           "")
                     ],
                   ),

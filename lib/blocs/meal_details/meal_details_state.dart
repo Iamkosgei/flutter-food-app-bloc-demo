@@ -12,9 +12,9 @@ class MealDetailsInitial extends MealDetailsState {}
 class MealDetailsLoading extends MealDetailsState {}
 
 class MealDetailsLoaded extends MealDetailsState {
-  final MealDetails mealDetails;
+  final Meal mealDetails;
   @override
-  List<MealDetails> get props => [mealDetails];
+  List<Meal> get props => [mealDetails];
 
   MealDetailsLoaded(this.mealDetails) : assert(mealDetails != null);
 }
