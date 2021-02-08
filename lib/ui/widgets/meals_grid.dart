@@ -1,6 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_bloc/blocs/meals/meals_bloc.dart';
+
 import 'package:food_bloc/models/meals.dart';
 import 'package:food_bloc/ui/pages/meals_details_page.dart';
 
@@ -34,7 +34,7 @@ class MealsGrid extends StatelessWidget {
               height: 400,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                image: NetworkImage(
+                image: CachedNetworkImageProvider(
                   meals[index].strMealThumb,
                 ),
                 fit: BoxFit.cover,

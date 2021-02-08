@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_bloc/blocs/meal_details/meal_details_bloc.dart';
@@ -35,8 +36,8 @@ class _MealsDetailsPageState extends State<MealsDetailsPage> {
             flexibleSpace: Stack(
               children: <Widget>[
                 Positioned.fill(
-                    child: Image.network(
-                  widget.meal.strMealThumb,
+                    child: CachedNetworkImage(
+                  imageUrl: widget.meal.strMealThumb,
                   fit: BoxFit.cover,
                 )),
               ],
