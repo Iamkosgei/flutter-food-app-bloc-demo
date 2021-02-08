@@ -38,14 +38,6 @@ class ApiService {
 
   Future<Meal> getMealDetails(String id) async {
     try {
-      Meal cachedMeal = await databaseService.getMeal(int.parse(id));
-
-      if (cachedMeal != null) {
-        if (cachedMeal.strInstructions != null || cachedMeal.strTags != null) {
-          return cachedMeal;
-        }
-      }
-
       final mealDetailsUrl = '$baseUrl/lookup.php?i=$id';
 
       final response = await this.httpClient.get(mealDetailsUrl);
@@ -55,8 +47,7 @@ class ApiService {
       }
       final mealsDetailsJson = jsonDecode(response.body);
       Meal meal = Meal.fromJson(mealsDetailsJson['meals'][0]);
-      //cache
-      databaseService.addMeal(meal);
+
       return meal;
     } catch (e) {
       throw Exception('error getting meal details');

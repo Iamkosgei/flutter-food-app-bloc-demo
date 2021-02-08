@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/foundation.dart' as found;
 import 'package:food_bloc/models/category.dart';
@@ -9,58 +8,71 @@ import 'package:food_bloc/services/database_service.dart';
 import 'package:food_bloc/utils/locator.dart';
 
 class MealsRepo {
+  final StreamController<Meal> mealDetailsController =
+      StreamController<Meal>.broadcast();
+
+  final StreamController<List<Meal>> mealsController =
+      StreamController<List<Meal>>.broadcast();
+  final StreamController<List<Category>> categoriesController =
+      StreamController<List<Category>>.broadcast();
+
   final ApiService apiService;
   MealsRepo(this.apiService) : assert(apiService != null);
 
   var databaseService = getIt.get<DatabaseService>();
 
-  final StreamController<List<Meal>> _mealsController =
-      StreamController<List<Meal>>.broadcast();
-
-  Stream<List<Meal>> listenToMeals(String category) {
+  Stream<List<Meal>> getMealsInCategory(String category) {
     databaseService.getMealsInCategory(category).then((cachedCategories) {
       if (cachedCategories.isNotEmpty) {
-        _mealsController.add(cachedCategories);
+        mealsController.add(cachedCategories);
       }
       apiService.fetchMeals(category).then((newCategories) {
         if (newCategories.length != cachedCategories.length) {
-          log("changed----------");
-          _mealsController.add(newCategories);
+          mealsController.add(newCategories);
           databaseService.deleteAllMealsInCategory(category).then(
               (value) => databaseService.insertMultipleMeals(newCategories));
         }
       });
     });
-    return _mealsController.stream;
+    return mealsController.stream;
   }
 
-  Future<List<Meal>> getMeals(String category) async {
-    return await apiService.fetchMeals(category);
-  }
-
-  Future<Meal> getMealDetails(String id) async {
-    return await apiService.getMealDetails(id);
-  }
-
-  final StreamController<List<Category>> _categoriesController =
-      StreamController<List<Category>>.broadcast();
-  Stream<List<Category>> listenToCategories() {
-    databaseService.getCategories().then((cachedCategories) {
-      if (cachedCategories.isNotEmpty) {
-        _categoriesController.add(cachedCategories);
+  Stream<Meal> getMealDetails(String id) {
+    databaseService.getMeal(int.parse(id)).then((cachedMeal) {
+      if (cachedMeal != null) {
+        if (cachedMeal.strInstructions != null || cachedMeal.strTags != null) {
+          mealDetailsController.add(cachedMeal);
+        }
       }
 
-      apiService.getCategories().then((newCategories) {
-        if (!found.listEquals(newCategories, cachedCategories)) {
-          log("lentgh --- ${newCategories.length}");
-          databaseService.deleteAllCategories().then((value) =>
-              databaseService.insertMultipleCategories(newCategories));
-
-          _categoriesController.add(newCategories);
+      apiService.getMealDetails(id).then((meal) {
+        if (meal != cachedMeal) {
+          mealDetailsController.add(meal);
+          //cache
+          databaseService.addMeal(meal);
         }
       });
     });
 
-    return _categoriesController.stream;
+    return mealDetailsController.stream;
+  }
+
+  Stream<List<Category>> getCategories() {
+    databaseService.getCategories().then((cachedCategories) {
+      if (cachedCategories.isNotEmpty) {
+        categoriesController.add(cachedCategories);
+      }
+
+      apiService.getCategories().then((newCategories) {
+        if (!found.listEquals(newCategories, cachedCategories)) {
+          databaseService.deleteAllCategories().then((value) =>
+              databaseService.insertMultipleCategories(newCategories));
+
+          categoriesController.add(newCategories);
+        }
+      });
+    });
+
+    return categoriesController.stream;
   }
 }

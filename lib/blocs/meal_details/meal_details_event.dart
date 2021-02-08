@@ -11,3 +11,8 @@ class GetMealDetails extends MealDetailsEvent {
   final String id;
   const GetMealDetails(this.id);
 }
+
+class SetMealDetails extends MealDetailsEvent {
+  final Meal mealDetails;
+  const SetMealDetails(this.mealDetails);
+}

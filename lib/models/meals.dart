@@ -64,4 +64,19 @@ class Meal {
   String toString() {
     return "$strCategory";
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Meal &&
+          runtimeType == other.runtimeType &&
+          idMeal == other.idMeal &&
+          strMeal == other.strMeal &&
+          strCategory == other.strCategory &&
+          strInstructions == other.strInstructions &&
+          strMealThumb == other.strMealThumb &&
+          strTags == other.strTags;
+
+  @override
+  int get hashCode => idMeal.hashCode;
 }

@@ -14,21 +14,28 @@ class MealDetailsBloc extends Bloc<MealDetailsEvent, MealDetailsState> {
   MealDetailsBloc({@required this.mealsRepo}) : super(MealDetailsInitial());
 
   @override
+  Future<void> close() {
+    mealsRepo.mealDetailsController.close();
+    return super.close();
+  }
+
+  @override
   Stream<MealDetailsState> mapEventToState(
     MealDetailsEvent event,
   ) async* {
     if (event is GetMealDetails) {
       yield MealDetailsLoading();
       try {
-        final Meal mealDetails = await mealsRepo.getMealDetails(event.id);
-        if (mealDetails != null) {
-          yield MealDetailsLoaded(mealDetails);
-        } else {
-          yield MealDetailsError();
-        }
+        mealsRepo.getMealDetails(event.id).listen((mealDetails) {
+          if (mealDetails != null) {
+            add(SetMealDetails(mealDetails));
+          }
+        });
       } catch (e) {
         yield MealDetailsError();
       }
+    } else if (event is SetMealDetails) {
+      yield MealDetailsLoaded(event.mealDetails);
     }
   }
 }

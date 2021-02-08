@@ -17,13 +17,19 @@ class MealCategoryBloc extends Bloc<MealCategoryEvent, MealCategoryState> {
   }
 
   @override
+  Future<void> close() {
+    mealsRepo.categoriesController.close();
+    return super.close();
+  }
+
+  @override
   Stream<MealCategoryState> mapEventToState(
     MealCategoryEvent event,
   ) async* {
     if (event is FetchCategories) {
       yield MealCategoryLoading();
       try {
-        mealsRepo.listenToCategories().listen((event) {
+        mealsRepo.getCategories().listen((event) {
           add(CategoriesLoaded(event));
         });
       } catch (e) {

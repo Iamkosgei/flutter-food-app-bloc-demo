@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -17,13 +16,19 @@ class MealsBloc extends Bloc<MealsEvent, MealsState> {
   MealsState get initialState => MealsInitial();
 
   @override
+  Future<void> close() {
+    mealsRepo.mealsController.close();
+    return super.close();
+  }
+
+  @override
   Stream<MealsState> mapEventToState(
     MealsEvent event,
   ) async* {
     if (event is FetchMeals) {
       yield MealsLoading();
 
-      mealsRepo.listenToMeals(event.category).listen((event) {
+      mealsRepo.getMealsInCategory(event.category).listen((event) {
         add(MealsLoadedEvent(event));
       });
     } else if (event is MealsLoadedEvent) {
