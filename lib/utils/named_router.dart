@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_bloc/models/meals.dart';
-import 'package:food_bloc/ui/pages/categories_page.dart';
+import 'package:food_bloc/ui/pages/home_page.dart';
 import 'package:food_bloc/ui/pages/meals_details_page.dart';
 import 'package:food_bloc/ui/pages/meals_page.dart';
 
