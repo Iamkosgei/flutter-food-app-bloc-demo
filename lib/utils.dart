@@ -18,4 +18,9 @@ class Utils {
   static const String DB_NAME = 'food_database.db';
   static const String MEAL_TABLE = 'meal';
   static const String CATEGORY_TABLE = 'category';
+
+  //routes
+  static const HOME = "/";
+  static const CATEGORY = "category";
+  static const MEAL_DETAILS = "details";
 }

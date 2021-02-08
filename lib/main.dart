@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_bloc/utils.dart';
 
 import 'blocs/meal_category/meal_category_bloc.dart';
 import 'blocs/meal_details/meal_details_bloc.dart';
@@ -9,8 +10,8 @@ import 'repository/meals_repo.dart';
 
 import 'services/api_service.dart';
 import 'services/database_service.dart';
-import 'ui/pages/categories_page.dart';
 import 'utils/locator.dart';
+import 'utils/named_router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,14 +49,14 @@ class MyApp extends StatelessWidget {
             create: (context) => MealCategoryBloc(mealsRepo: mealsRepo)),
       ],
       child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Bloc Demo',
-          theme: ThemeData(
-            primarySwatch: Colors.green,
-          ),
-          home: CategoryPage()
-          //MealsPage(),
-          ),
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Bloc Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.green,
+        ),
+        onGenerateRoute: generateRoute,
+        initialRoute: Utils.HOME,
+      ),
     );
   }
 }

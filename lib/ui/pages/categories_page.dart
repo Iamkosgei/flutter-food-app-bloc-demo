@@ -6,6 +6,7 @@ import 'package:food_bloc/blocs/meal_category/meal_category_bloc.dart';
 import 'package:food_bloc/models/category.dart';
 
 import '../../blocs/meals/meals_bloc.dart';
+import '../../utils.dart';
 import 'meals_page.dart';
 
 class CategoryPage extends StatelessWidget {
@@ -54,12 +55,9 @@ class CategoryPage extends StatelessWidget {
                     onTap: () {
                       BlocProvider.of<MealsBloc>(context)
                           .add(FetchMeals(category.strCategory));
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MealsPage(
-                                    category: category.strCategory,
-                                  )));
+
+                      Navigator.pushNamed(context, Utils.CATEGORY,
+                          arguments: category.strCategory);
                     },
                     child: Container(
                       margin: EdgeInsets.all(8),
